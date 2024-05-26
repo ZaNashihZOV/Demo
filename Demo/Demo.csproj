@@ -171,7 +171,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Задания\Модуль1\" />
     <Folder Include="Задания\Модуль2\" />
     <Folder Include="Задания\Модуль3\" />
   </ItemGroup>
@@ -186,6 +185,8 @@
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
+    <Content Include="Задания\Модуль1\script.sql" />
+    <Content Include="Задания\Модуль1\script_2.sql" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
