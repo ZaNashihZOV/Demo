@@ -18,11 +18,16 @@ namespace Demo.Pages
     /// <summary>
     /// Логика взаимодействия для AuthPage.xaml
     /// </summary>
-    public partial class AuthPage : Page
+    public partial class RegPage : Page
     {
-        public AuthPage()
+        public RegPage()
         {
             InitializeComponent();
+        }
+
+        private void InitializeComponent()
+        {
+            throw new NotImplementedException();
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
