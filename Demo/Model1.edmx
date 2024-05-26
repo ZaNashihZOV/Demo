@@ -1,0 +1,677 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище user09Model" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ProblemDescription">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RepairComment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Message" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="MasterID" Type="int" Nullable="false" />
+          <Property Name="RepairRequestID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RepairPart">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RepairRequest">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="StartDate" Type="datetime" Nullable="false" />
+          <Property Name="CompletionDate" Type="datetime" />
+          <Property Name="MasterID" Type="int" />
+          <Property Name="ClientID" Type="int" Nullable="false" />
+          <Property Name="TechModelID" Type="int" Nullable="false" />
+          <Property Name="ProblemDescriptionID" Type="int" Nullable="false" />
+          <Property Name="RequestStatusID" Type="int" Nullable="false" />
+          <Property Name="RepairPartID" Type="int" />
+        </EntityType>
+        <EntityType Name="RequestStatus">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="TechModel">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="TechTypeID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TechType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FIO" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="Login" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="RoleID" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_RepairComment_RepairRequest">
+          <End Role="RepairRequest" Type="Self.RepairRequest" Multiplicity="1" />
+          <End Role="RepairComment" Type="Self.RepairComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RepairRequest">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RepairComment">
+              <PropertyRef Name="RepairRequestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RepairComment_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="RepairComment" Type="Self.RepairComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RepairComment">
+              <PropertyRef Name="MasterID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RepairRequest_Client">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="RepairRequest" Type="Self.RepairRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RepairRequest">
+              <PropertyRef Name="ClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RepairRequest_Master">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="RepairRequest" Type="Self.RepairRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RepairRequest">
+              <PropertyRef Name="MasterID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RepairRequest_ProblemDescription">
+          <End Role="ProblemDescription" Type="Self.ProblemDescription" Multiplicity="1" />
+          <End Role="RepairRequest" Type="Self.RepairRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProblemDescription">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RepairRequest">
+              <PropertyRef Name="ProblemDescriptionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RepairRequest_RepairPart">
+          <End Role="RepairPart" Type="Self.RepairPart" Multiplicity="0..1" />
+          <End Role="RepairRequest" Type="Self.RepairRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RepairPart">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RepairRequest">
+              <PropertyRef Name="RepairPartID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RepairRequest_RequestStatus">
+          <End Role="RequestStatus" Type="Self.RequestStatus" Multiplicity="1" />
+          <End Role="RepairRequest" Type="Self.RepairRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RequestStatus">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RepairRequest">
+              <PropertyRef Name="RequestStatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RepairRequest_TechModel">
+          <End Role="TechModel" Type="Self.TechModel" Multiplicity="1" />
+          <End Role="RepairRequest" Type="Self.RepairRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TechModel">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RepairRequest">
+              <PropertyRef Name="TechModelID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TechModel_TechType">
+          <End Role="TechType" Type="Self.TechType" Multiplicity="1" />
+          <End Role="TechModel" Type="Self.TechModel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TechType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TechModel">
+              <PropertyRef Name="TechTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище user09ModelContainer">
+          <EntitySet Name="ProblemDescription" EntityType="Self.ProblemDescription" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RepairComment" EntityType="Self.RepairComment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RepairPart" EntityType="Self.RepairPart" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RepairRequest" EntityType="Self.RepairRequest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RequestStatus" EntityType="Self.RequestStatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TechModel" EntityType="Self.TechModel" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TechType" EntityType="Self.TechType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_RepairComment_RepairRequest" Association="Self.FK_RepairComment_RepairRequest">
+            <End Role="RepairRequest" EntitySet="RepairRequest" />
+            <End Role="RepairComment" EntitySet="RepairComment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RepairComment_User" Association="Self.FK_RepairComment_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="RepairComment" EntitySet="RepairComment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RepairRequest_Client" Association="Self.FK_RepairRequest_Client">
+            <End Role="User" EntitySet="User" />
+            <End Role="RepairRequest" EntitySet="RepairRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RepairRequest_Master" Association="Self.FK_RepairRequest_Master">
+            <End Role="User" EntitySet="User" />
+            <End Role="RepairRequest" EntitySet="RepairRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RepairRequest_ProblemDescription" Association="Self.FK_RepairRequest_ProblemDescription">
+            <End Role="ProblemDescription" EntitySet="ProblemDescription" />
+            <End Role="RepairRequest" EntitySet="RepairRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RepairRequest_RepairPart" Association="Self.FK_RepairRequest_RepairPart">
+            <End Role="RepairPart" EntitySet="RepairPart" />
+            <End Role="RepairRequest" EntitySet="RepairRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RepairRequest_RequestStatus" Association="Self.FK_RepairRequest_RequestStatus">
+            <End Role="RequestStatus" EntitySet="RequestStatus" />
+            <End Role="RepairRequest" EntitySet="RepairRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RepairRequest_TechModel" Association="Self.FK_RepairRequest_TechModel">
+            <End Role="TechModel" EntitySet="TechModel" />
+            <End Role="RepairRequest" EntitySet="RepairRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TechModel_TechType" Association="Self.FK_TechModel_TechType">
+            <End Role="TechType" EntitySet="TechType" />
+            <End Role="TechModel" EntitySet="TechModel" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Role" Association="Self.FK_User_Role">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="user09Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ProblemDescription">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="RepairRequest" Relationship="Self.FK_RepairRequest_ProblemDescription" FromRole="ProblemDescription" ToRole="RepairRequest" />
+        </EntityType>
+        <EntityType Name="RepairComment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Message" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MasterID" Type="Int32" Nullable="false" />
+          <Property Name="RepairRequestID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="RepairRequest" Relationship="Self.FK_RepairComment_RepairRequest" FromRole="RepairComment" ToRole="RepairRequest" />
+          <NavigationProperty Name="User" Relationship="Self.FK_RepairComment_User" FromRole="RepairComment" ToRole="User" />
+        </EntityType>
+        <EntityType Name="RepairPart">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="RepairRequest" Relationship="Self.FK_RepairRequest_RepairPart" FromRole="RepairPart" ToRole="RepairRequest" />
+        </EntityType>
+        <EntityType Name="RepairRequest">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CompletionDate" Type="DateTime" Precision="3" />
+          <Property Name="MasterID" Type="Int32" />
+          <Property Name="ClientID" Type="Int32" Nullable="false" />
+          <Property Name="TechModelID" Type="Int32" Nullable="false" />
+          <Property Name="ProblemDescriptionID" Type="Int32" Nullable="false" />
+          <Property Name="RequestStatusID" Type="Int32" Nullable="false" />
+          <Property Name="RepairPartID" Type="Int32" />
+          <NavigationProperty Name="ProblemDescription" Relationship="Self.FK_RepairRequest_ProblemDescription" FromRole="RepairRequest" ToRole="ProblemDescription" />
+          <NavigationProperty Name="RepairComment" Relationship="Self.FK_RepairComment_RepairRequest" FromRole="RepairRequest" ToRole="RepairComment" />
+          <NavigationProperty Name="RepairPart" Relationship="Self.FK_RepairRequest_RepairPart" FromRole="RepairRequest" ToRole="RepairPart" />
+          <NavigationProperty Name="User" Relationship="Self.FK_RepairRequest_Client" FromRole="RepairRequest" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="Self.FK_RepairRequest_Master" FromRole="RepairRequest" ToRole="User" />
+          <NavigationProperty Name="RequestStatus" Relationship="Self.FK_RepairRequest_RequestStatus" FromRole="RepairRequest" ToRole="RequestStatus" />
+          <NavigationProperty Name="TechModel" Relationship="Self.FK_RepairRequest_TechModel" FromRole="RepairRequest" ToRole="TechModel" />
+        </EntityType>
+        <EntityType Name="RequestStatus">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="RepairRequest" Relationship="Self.FK_RepairRequest_RequestStatus" FromRole="RequestStatus" ToRole="RepairRequest" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Self.FK_User_Role" FromRole="Role" ToRole="User" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="TechModel">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TechTypeID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="RepairRequest" Relationship="Self.FK_RepairRequest_TechModel" FromRole="TechModel" ToRole="RepairRequest" />
+          <NavigationProperty Name="TechType" Relationship="Self.FK_TechModel_TechType" FromRole="TechModel" ToRole="TechType" />
+        </EntityType>
+        <EntityType Name="TechType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="TechModel" Relationship="Self.FK_TechModel_TechType" FromRole="TechType" ToRole="TechModel" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FIO" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Phone" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Login" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RoleID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="RepairComment" Relationship="Self.FK_RepairComment_User" FromRole="User" ToRole="RepairComment" />
+          <NavigationProperty Name="RepairRequest" Relationship="Self.FK_RepairRequest_Client" FromRole="User" ToRole="RepairRequest" />
+          <NavigationProperty Name="RepairRequest1" Relationship="Self.FK_RepairRequest_Master" FromRole="User" ToRole="RepairRequest" />
+          <NavigationProperty Name="Role" Relationship="Self.FK_User_Role" FromRole="User" ToRole="Role" />
+        </EntityType>
+        <Association Name="FK_RepairRequest_ProblemDescription">
+          <End Role="ProblemDescription" Type="Self.ProblemDescription" Multiplicity="1" />
+          <End Role="RepairRequest" Type="Self.RepairRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProblemDescription">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RepairRequest">
+              <PropertyRef Name="ProblemDescriptionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RepairComment_RepairRequest">
+          <End Role="RepairRequest" Type="Self.RepairRequest" Multiplicity="1" />
+          <End Role="RepairComment" Type="Self.RepairComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RepairRequest">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RepairComment">
+              <PropertyRef Name="RepairRequestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RepairComment_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="RepairComment" Type="Self.RepairComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RepairComment">
+              <PropertyRef Name="MasterID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RepairRequest_RepairPart">
+          <End Role="RepairPart" Type="Self.RepairPart" Multiplicity="0..1" />
+          <End Role="RepairRequest" Type="Self.RepairRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RepairPart">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RepairRequest">
+              <PropertyRef Name="RepairPartID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RepairRequest_Client">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="RepairRequest" Type="Self.RepairRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RepairRequest">
+              <PropertyRef Name="ClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RepairRequest_Master">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="RepairRequest" Type="Self.RepairRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RepairRequest">
+              <PropertyRef Name="MasterID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RepairRequest_RequestStatus">
+          <End Role="RequestStatus" Type="Self.RequestStatus" Multiplicity="1" />
+          <End Role="RepairRequest" Type="Self.RepairRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RequestStatus">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RepairRequest">
+              <PropertyRef Name="RequestStatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RepairRequest_TechModel">
+          <End Role="TechModel" Type="Self.TechModel" Multiplicity="1" />
+          <End Role="RepairRequest" Type="Self.RepairRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TechModel">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RepairRequest">
+              <PropertyRef Name="TechModelID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TechModel_TechType">
+          <End Role="TechType" Type="Self.TechType" Multiplicity="1" />
+          <End Role="TechModel" Type="Self.TechModel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TechType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TechModel">
+              <PropertyRef Name="TechTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ProblemDescription" EntityType="Self.ProblemDescription" />
+          <EntitySet Name="RepairComment" EntityType="Self.RepairComment" />
+          <EntitySet Name="RepairPart" EntityType="Self.RepairPart" />
+          <EntitySet Name="RepairRequest" EntityType="Self.RepairRequest" />
+          <EntitySet Name="RequestStatus" EntityType="Self.RequestStatus" />
+          <EntitySet Name="Role" EntityType="Self.Role" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="TechModel" EntityType="Self.TechModel" />
+          <EntitySet Name="TechType" EntityType="Self.TechType" />
+          <EntitySet Name="User" EntityType="Self.User" />
+          <AssociationSet Name="FK_RepairRequest_ProblemDescription" Association="Self.FK_RepairRequest_ProblemDescription">
+            <End Role="ProblemDescription" EntitySet="ProblemDescription" />
+            <End Role="RepairRequest" EntitySet="RepairRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RepairComment_RepairRequest" Association="Self.FK_RepairComment_RepairRequest">
+            <End Role="RepairRequest" EntitySet="RepairRequest" />
+            <End Role="RepairComment" EntitySet="RepairComment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RepairComment_User" Association="Self.FK_RepairComment_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="RepairComment" EntitySet="RepairComment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RepairRequest_RepairPart" Association="Self.FK_RepairRequest_RepairPart">
+            <End Role="RepairPart" EntitySet="RepairPart" />
+            <End Role="RepairRequest" EntitySet="RepairRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RepairRequest_Client" Association="Self.FK_RepairRequest_Client">
+            <End Role="User" EntitySet="User" />
+            <End Role="RepairRequest" EntitySet="RepairRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RepairRequest_Master" Association="Self.FK_RepairRequest_Master">
+            <End Role="User" EntitySet="User" />
+            <End Role="RepairRequest" EntitySet="RepairRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RepairRequest_RequestStatus" Association="Self.FK_RepairRequest_RequestStatus">
+            <End Role="RequestStatus" EntitySet="RequestStatus" />
+            <End Role="RepairRequest" EntitySet="RepairRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RepairRequest_TechModel" Association="Self.FK_RepairRequest_TechModel">
+            <End Role="TechModel" EntitySet="TechModel" />
+            <End Role="RepairRequest" EntitySet="RepairRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Role" Association="Self.FK_User_Role">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TechModel_TechType" Association="Self.FK_TechModel_TechType">
+            <End Role="TechType" EntitySet="TechType" />
+            <End Role="TechModel" EntitySet="TechModel" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище user09ModelContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="ProblemDescription">
+            <EntityTypeMapping TypeName="user09Model.ProblemDescription">
+              <MappingFragment StoreEntitySet="ProblemDescription">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RepairComment">
+            <EntityTypeMapping TypeName="user09Model.RepairComment">
+              <MappingFragment StoreEntitySet="RepairComment">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="MasterID" ColumnName="MasterID" />
+                <ScalarProperty Name="RepairRequestID" ColumnName="RepairRequestID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RepairPart">
+            <EntityTypeMapping TypeName="user09Model.RepairPart">
+              <MappingFragment StoreEntitySet="RepairPart">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RepairRequest">
+            <EntityTypeMapping TypeName="user09Model.RepairRequest">
+              <MappingFragment StoreEntitySet="RepairRequest">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="CompletionDate" ColumnName="CompletionDate" />
+                <ScalarProperty Name="MasterID" ColumnName="MasterID" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+                <ScalarProperty Name="TechModelID" ColumnName="TechModelID" />
+                <ScalarProperty Name="ProblemDescriptionID" ColumnName="ProblemDescriptionID" />
+                <ScalarProperty Name="RequestStatusID" ColumnName="RequestStatusID" />
+                <ScalarProperty Name="RepairPartID" ColumnName="RepairPartID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RequestStatus">
+            <EntityTypeMapping TypeName="user09Model.RequestStatus">
+              <MappingFragment StoreEntitySet="RequestStatus">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Role">
+            <EntityTypeMapping TypeName="user09Model.Role">
+              <MappingFragment StoreEntitySet="Role">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="user09Model.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TechModel">
+            <EntityTypeMapping TypeName="user09Model.TechModel">
+              <MappingFragment StoreEntitySet="TechModel">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="TechTypeID" ColumnName="TechTypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TechType">
+            <EntityTypeMapping TypeName="user09Model.TechType">
+              <MappingFragment StoreEntitySet="TechType">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User">
+            <EntityTypeMapping TypeName="user09Model.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="FIO" ColumnName="FIO" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

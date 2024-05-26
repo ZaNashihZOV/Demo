@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="b819f5c5f1894369a615e00cd331a487" Name="Diagram1">
+        <EntityTypeShape EntityType="user09Model.ProblemDescription" Width="1.5" PointX="3" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="user09Model.RepairComment" Width="1.5" PointX="7.5" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="user09Model.RepairPart" Width="1.5" PointX="3" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="user09Model.RepairRequest" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="user09Model.RequestStatus" Width="1.5" PointX="3" PointY="10.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="user09Model.Role" Width="1.5" PointX="0.75" PointY="13.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="user09Model.sysdiagrams" Width="1.5" PointX="5.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="user09Model.TechModel" Width="1.5" PointX="3" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="user09Model.TechType" Width="1.5" PointX="0.75" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="user09Model.User" Width="1.5" PointX="3" PointY="12.5" IsExpanded="true" />
+        <AssociationConnector Association="user09Model.FK_RepairRequest_ProblemDescription" ManuallyRouted="false" />
+        <AssociationConnector Association="user09Model.FK_RepairComment_RepairRequest" ManuallyRouted="false" />
+        <AssociationConnector Association="user09Model.FK_RepairComment_User" ManuallyRouted="false" />
+        <AssociationConnector Association="user09Model.FK_RepairRequest_RepairPart" ManuallyRouted="false" />
+        <AssociationConnector Association="user09Model.FK_RepairRequest_Client" ManuallyRouted="false" />
+        <AssociationConnector Association="user09Model.FK_RepairRequest_Master" ManuallyRouted="false" />
+        <AssociationConnector Association="user09Model.FK_RepairRequest_RequestStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="user09Model.FK_RepairRequest_TechModel" ManuallyRouted="false" />
+        <AssociationConnector Association="user09Model.FK_User_Role" ManuallyRouted="false" />
+        <AssociationConnector Association="user09Model.FK_TechModel_TechType" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
